@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://obdm5dpt76l3"]
+
+[ext_resource type="Script" uid="uid://dcayyvsc035wm" path="res://Scripts/Character/Player/Player.gd" id="1_5qcei"]
+[ext_resource type="PackedScene" uid="uid://bk1yjmi5mpt8o" path="res://Scene/Components/MovementComp/MovementComponent.tscn" id="2_tsjj8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dvft2"]
+albedo_color = Color(0.81, 0.1782, 0.1782, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5qcei"]
+material = SubResource("StandardMaterial3D_dvft2")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tsjj8"]
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_5qcei")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_5qcei")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_tsjj8")
+
+[node name="MovementComponent" parent="." node_paths=PackedStringArray("character") instance=ExtResource("2_tsjj8")]
+character = NodePath("..")
+max_speed = 5.0
+speed_up_time = 0.3
+speed_down_time = 0.15
+jump_up_time = 0.3
+jump_down_time = 0.3
+jump_height = 1.0
+run_boost_time = 1.5
+mouse_sensitivity = 0.002
+
+[node name="head_marker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.676142, 0)

@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cuyaaq22mxccd"]
+
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="1_i0cxd"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_c4hdq"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_34cem"]
+
+[sub_resource type="Resource" id="Resource_2wv6w"]
+script = ExtResource("3_34cem")
+duration = 1.0
+transition = 0
+ease = 2
+
+[node name="BaseMap" type="Node3D"]
+
+[node name="map_camera" type="Camera3D" parent="." groups=["map_camera"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0752414)
+
+[node name="PhantomCameraHost" type="Node" parent="map_camera"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("1_i0cxd")
+
+[node name="player_follower_phantom" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0752414)
+top_level = true
+script = ExtResource("2_c4hdq")
+follow_mode = 1
+tween_resource = SubResource("Resource_2wv6w")

@@ -1,0 +1,112 @@
+[gd_scene load_steps=10 format=3 uid="uid://bk612j05hlsmf"]
+
+[ext_resource type="PackedScene" uid="uid://cuyaaq22mxccd" path="res://Scene/Maps/BaseMap.tscn" id="1_8yfuk"]
+[ext_resource type="Texture2D" uid="uid://dpq2w5skirqxq" path="res://icon.svg" id="2_g0vs8"]
+[ext_resource type="PackedScene" uid="uid://obdm5dpt76l3" path="res://Scene/Charactor/Player/Player.tscn" id="3_g0vs8"]
+
+[sub_resource type="GDScript" id="GDScript_8yfuk"]
+script/source = "extends Node3D
+
+@onready var target_sprite3d = $Sprite3D # 目标Sprite3D
+@onready var screen_sprite2d = $Sprite2D  # 用于显示的2D精灵
+@onready var main_camera = $\"../map_camera\"  # 主相机
+@export var base_distance : float = 1.0  # 基准距离（在此处大小为100%）
+@export var base_scale : float = 1.0  # 基准缩放比例
+
+
+func _process(delta):
+	return
+	# 转换3D坐标到屏幕坐标
+	var screen_pos = main_camera.unproject_position(target_sprite3d.global_position)
+	
+	# 转换为当前节点的本地坐标
+	#var local_pos = to_local(screen_pos)
+	
+	# 设置2D精灵位置
+	screen_sprite2d.position = screen_pos
+	
+	# 同步大小（根据距离调整缩放）
+	sync_sprite_size()
+	
+	# 检查可见性
+	screen_sprite2d.visible = is_sprite3d_visible()
+
+# 同步2D精灵与3D精灵的视觉大小
+func sync_sprite_size():
+	# 计算3D精灵到相机的距离
+	var distance = main_camera.global_position.distance_to(target_sprite3d.global_position)
+	
+	# 根据距离计算缩放比例（距离越远，缩放越小）
+	var scale_factor = base_distance / distance * base_scale
+	
+	# 应用缩放（限制最小缩放范围避免过大或过小）
+	screen_sprite2d.scale = Vector2(
+		clamp(scale_factor, 0.1, 5.0),  # 最小0.1，最大5.0
+		clamp(scale_factor, 0.1, 5.0)
+	)
+
+# 检查Sprite3D是否在相机视野内
+func is_sprite3d_visible() -> bool:
+	pass
+	return main_camera.is_position_in_frustum(target_sprite3d.global_position)
+
+# 手动设置2D精灵位置
+func set_custom_position(pos: Vector2):
+	pass
+	screen_sprite2d.position = pos
+"
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8yfuk"]
+
+[sub_resource type="Sky" id="Sky_g0vs8"]
+sky_material = SubResource("ProceduralSkyMaterial_8yfuk")
+
+[sub_resource type="Environment" id="Environment_edpvp"]
+background_mode = 2
+sky = SubResource("Sky_g0vs8")
+
+[sub_resource type="BoxMesh" id="BoxMesh_g0vs8"]
+size = Vector3(10, 0.1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_edpvp"]
+size = Vector3(10, 0.1, 10)
+
+[node name="BaseMap" instance=ExtResource("1_8yfuk")]
+
+[node name="map_camera" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="player_follower_phantom" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Node3D" type="Node3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+visible = false
+script = SubResource("GDScript_8yfuk")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node3D" index="0"]
+visible = false
+texture = ExtResource("2_g0vs8")
+
+[node name="Sprite3D" type="Sprite3D" parent="Node3D" index="1"]
+visible = false
+billboard = 2
+texture = ExtResource("2_g0vs8")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="3"]
+environment = SubResource("Environment_edpvp")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 0.930507, 0.366274, 0, -0.366274, 0.930507, 0, 0, 0)
+light_color = Color(0.733428, 0.699818, 0, 1)
+
+[node name="CharacterBody3D" parent="." index="5" instance=ExtResource("3_g0vs8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="6"]
+mesh = SubResource("BoxMesh_g0vs8")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" index="0"]
+shape = SubResource("BoxShape3D_edpvp")
