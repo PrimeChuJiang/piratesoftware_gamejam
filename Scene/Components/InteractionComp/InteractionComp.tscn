@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cisd0m8esnogm"]
+
+[ext_resource type="Script" uid="uid://byamm7fys3rtd" path="res://Scripts/Components/InteractionComp/InteractionComp.gd" id="1_m2amy"]
+
+[node name="Area3D" type="Area3D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_m2amy")
+interaction_type = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+metadata/_edit_group_ = true

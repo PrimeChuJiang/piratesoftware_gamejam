@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://obdm5dpt76l3"]
+[gd_scene load_steps=9 format=3 uid="uid://obdm5dpt76l3"]
 
 [ext_resource type="Script" uid="uid://dcayyvsc035wm" path="res://Scripts/Character/Player/Player.gd" id="1_5qcei"]
 [ext_resource type="PackedScene" uid="uid://bk1yjmi5mpt8o" path="res://Scene/Components/MovementComp/MovementComponent.tscn" id="2_tsjj8"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_xrstg"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_sixoq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dvft2"]
 albedo_color = Color(0.81, 0.1782, 0.1782, 1)
@@ -10,6 +12,12 @@ albedo_color = Color(0.81, 0.1782, 0.1782, 1)
 material = SubResource("StandardMaterial3D_dvft2")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tsjj8"]
+
+[sub_resource type="Resource" id="Resource_jjqwg"]
+script = ExtResource("4_sixoq")
+duration = 1.0
+transition = 0
+ease = 2
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
 script = ExtResource("1_5qcei")
@@ -24,7 +32,7 @@ shape = SubResource("CapsuleShape3D_tsjj8")
 character = NodePath("..")
 max_speed = 5.0
 speed_up_time = 0.3
-speed_down_time = 0.15
+speed_down_time = 0.05
 jump_up_time = 0.3
 jump_down_time = 0.3
 jump_height = 1.0
@@ -33,3 +41,9 @@ mouse_sensitivity = 0.002
 
 [node name="head_marker" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.676142, 0)
+
+[node name="PhantomCamera3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.719261, 0)
+script = ExtResource("3_xrstg")
+tween_resource = SubResource("Resource_jjqwg")
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"

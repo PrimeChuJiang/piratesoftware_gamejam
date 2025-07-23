@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2iir4amisf5"]
+
+[ext_resource type="Script" uid="uid://b8gjs6bkov3rw" path="res://Scripts/Actor/BaseActor.gd" id="1_agadj"]
+[ext_resource type="PackedScene" uid="uid://cisd0m8esnogm" path="res://Scene/Components/InteractionComp/InteractionComp.tscn" id="2_ss6ka"]
+
+[node name="BaseActor" type="Node3D"]
+script = ExtResource("1_agadj")
+
+[node name="Area3D" parent="." node_paths=PackedStringArray("parent_actor") instance=ExtResource("2_ss6ka")]
+parent_actor = NodePath("..")

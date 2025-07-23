@@ -15,3 +15,7 @@ enum interaction_type {
 	mechanism, #可交互机关
 	player, #玩家角色
 }
+
+class player_item:
+	var num : int
+	var item : ResourceItem

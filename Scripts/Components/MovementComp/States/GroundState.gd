@@ -80,32 +80,38 @@ func _character_movement(input_dir : Vector2, _delta : float):
 	var _character_velocity_dir : Vector3 = (state_machine.MovementComp.character.velocity).normalized()
 	# 将2D输入转换为3D空间方向
 	var world_dir : Vector3 = (state_machine.MovementComp.look_at_target.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var current_speed : Vector3 = state_machine.MovementComp.character.velocity
+	
 	if world_dir.x != 0 :
 		if _character_velocity_dir.x * world_dir.x >= 0:
-			state_machine.MovementComp.character.velocity.x = move_toward(state_machine.MovementComp.character.velocity.x, state_machine.MovementComp.max_speed * world_dir.x * boost_muti, state_machine.MovementComp.speed_up_acc * _delta)
+			current_speed.x = move_toward(current_speed.x, state_machine.MovementComp.max_speed * world_dir.x, state_machine.MovementComp.speed_up_acc * _delta)
+			#current_speed.x = lerp(current_speed.x, _character_velocity_dir.x*state_machine.MovementComp.max_speed, current_speed.length()/state_machine.MovementComp.speed_up_acc)
 		else :
-			state_machine.MovementComp.character.velocity.x = move_toward(state_machine.MovementComp.character.velocity.x, 0, state_machine.MovementComp.speed_down_acc * _delta)
+			current_speed.x = move_toward(current_speed.x, 0, state_machine.MovementComp.speed_down_acc * _delta)
 	elif can_jump:
-		state_machine.MovementComp.character.velocity.x = move_toward(state_machine.MovementComp.character.velocity.x, 0, state_machine.MovementComp.speed_down_acc * _delta)
+		current_speed.x = move_toward(current_speed.x, 0, state_machine.MovementComp.speed_down_acc * _delta)
 		
 	if world_dir.z != 0 :
 		if _character_velocity_dir.z * world_dir.z >= 0:
-			state_machine.MovementComp.character.velocity.z = move_toward(state_machine.MovementComp.character.velocity.z, state_machine.MovementComp.max_speed * world_dir.z * boost_muti, state_machine.MovementComp.speed_up_acc * _delta)
+			current_speed.z = move_toward(current_speed.z, state_machine.MovementComp.max_speed * world_dir.z, state_machine.MovementComp.speed_up_acc * _delta)
+			#current_speed.z = lerp(current_speed.z, _character_velocity_dir.z*state_machine.MovementComp.max_speed, current_speed.length()/state_machine.MovementComp.speed_up_acc)
 		else :
-			state_machine.MovementComp.character.velocity.z = move_toward(state_machine.MovementComp.character.velocity.z, 0, state_machine.MovementComp.speed_down_acc * _delta)
+			current_speed.z = move_toward(current_speed.z, 0, state_machine.MovementComp.speed_down_acc * _delta)
 	elif can_jump:
-		state_machine.MovementComp.character.velocity.z = move_toward(state_machine.MovementComp.character.velocity.z, 0, state_machine.MovementComp.speed_down_acc * _delta)
-	
+		current_speed.z = move_toward(current_speed.z, 0, state_machine.MovementComp.speed_down_acc * _delta)
 	
 	# y轴方向变化
 	if not can_jump:
 		if(_character_velocity_dir.y > 0):
-			state_machine.MovementComp.character.velocity.y = move_toward(state_machine.MovementComp.character.velocity.y, 0, state_machine.MovementComp.jump_up_acc * _delta)
+			current_speed.y = move_toward(current_speed.y, 0, state_machine.MovementComp.jump_up_acc * _delta)
 		else:
-			if state_machine.MovementComp.character.velocity.y > -state_machine.MovementComp.jump_speed :
-				state_machine.MovementComp.character.velocity.y = move_toward(state_machine.MovementComp.character.velocity.y, -state_machine.MovementComp.jump_speed - 0.1, state_machine.MovementComp.jump_down_acc * _delta)
+			if current_speed.y > -state_machine.MovementComp.jump_speed :
+				current_speed.y = move_toward(current_speed.y, -state_machine.MovementComp.jump_speed - 0.1, state_machine.MovementComp.jump_down_acc * _delta)
 			else :
-				state_machine.MovementComp.character.velocity.y -= state_machine.MovementComp.jump_down_acc*_delta
+				current_speed.y -= state_machine.MovementComp.jump_down_acc*_delta
+	else:
+		current_speed.y = 0
+	state_machine.MovementComp.character.velocity = current_speed
 
 
 func _on_action_triggered(action_name:String, event:InputEvent):
