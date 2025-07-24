@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://bk612j05hlsmf"]
+[gd_scene load_steps=15 format=3 uid="uid://bk612j05hlsmf"]
 
 [ext_resource type="PackedScene" uid="uid://cuyaaq22mxccd" path="res://Scene/Maps/BaseMap.tscn" id="1_8yfuk"]
 [ext_resource type="Texture2D" uid="uid://dpq2w5skirqxq" path="res://icon.svg" id="2_g0vs8"]
 [ext_resource type="PackedScene" uid="uid://obdm5dpt76l3" path="res://Scene/Charactor/Player/Player.tscn" id="3_g0vs8"]
 [ext_resource type="Shader" uid="uid://bpbmg6eclri4n" path="res://Shaders/Mario.gdshader" id="4_edpvp"]
 [ext_resource type="PackedScene" uid="uid://dnhnculnmihlq" path="res://Scene/Maps/test_postProcesing.tscn" id="5_tdor2"]
+[ext_resource type="PackedScene" uid="uid://dfrdcrpkdir1t" path="res://Scene/Maps/corridor.tscn" id="6_x8841"]
 
 [sub_resource type="GDScript" id="GDScript_8yfuk"]
 script/source = "extends Node3D
@@ -104,7 +105,7 @@ shader_parameter/vignette_opacity = 0.5
 
 [node name="map_camera" parent="." index="0"]
 physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39559, 3.13487)
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 1.57541, 3.13487)
 
 [node name="player_follower_phantom" parent="." index="1" node_paths=PackedStringArray("follow_target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 3.13487)
@@ -131,7 +132,7 @@ transform = Transform3D(1, 0, 0, 0, 0.930507, 0.366274, 0, -0.366274, 0.930507, 
 light_color = Color(0.733428, 0.699818, 0, 1)
 
 [node name="CharacterBody3D" parent="." index="5" instance=ExtResource("3_g0vs8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 3.13487)
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 1, 3.13487)
 up_direction = Vector3(0, 0.980581, 0.196116)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." index="6"]
@@ -161,3 +162,6 @@ visible = false
 texture = ExtResource("2_g0vs8")
 
 [node name="Sprite2D2" parent="SubViewport" index="2" instance=ExtResource("5_tdor2")]
+
+[node name="corridor" parent="." index="8" instance=ExtResource("6_x8841")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.114932, -15.7264)

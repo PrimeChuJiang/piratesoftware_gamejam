@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfrdcrpkdir1t"]
+
+[ext_resource type="PackedScene" uid="uid://yn07dw1j0vva" path="res://Assets/models/corridor.glb" id="1_4b4u5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4b4u5"]
+size = Vector3(2.00403, 1, 2.00024)
+
+[node name="corridor" instance=ExtResource("1_4b4u5")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ground" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ground/StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00152602, 0.684224, -0.000366265)
+shape = SubResource("BoxShape3D_4b4u5")
