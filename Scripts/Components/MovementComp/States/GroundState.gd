@@ -79,7 +79,7 @@ func _character_movement(input_dir : Vector2, _delta : float):
 	# 当前角色速度方向(单位向量)
 	var _character_velocity_dir : Vector3 = (state_machine.MovementComp.character.velocity).normalized()
 	# 将2D输入转换为3D空间方向
-	var world_dir : Vector3 = (state_machine.MovementComp.look_at_target.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var world_dir : Vector3 = (state_machine.MovementComp.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var current_speed : Vector3 = state_machine.MovementComp.character.velocity
 	
 	if world_dir.x != 0 :

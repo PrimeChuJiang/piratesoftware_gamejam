@@ -28,16 +28,17 @@ mesh = SubResource("CapsuleMesh_5qcei")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_tsjj8")
 
-[node name="MovementComponent" parent="." node_paths=PackedStringArray("character") instance=ExtResource("2_tsjj8")]
+[node name="MovementComponent" parent="." node_paths=PackedStringArray("character", "first_person_phantom") instance=ExtResource("2_tsjj8")]
 character = NodePath("..")
 max_speed = 5.0
-speed_up_time = 0.3
+speed_up_time = 0.1
 speed_down_time = 0.05
 jump_up_time = 0.3
 jump_down_time = 0.3
 jump_height = 1.0
 run_boost_time = 1.5
-mouse_sensitivity = 0.002
+mouse_sensitivity = 0.003
+first_person_phantom = NodePath("../PhantomCamera3D")
 
 [node name="head_marker" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.676142, 0)
@@ -45,5 +46,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.676142, 0)
 [node name="PhantomCamera3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.719261, 0)
 script = ExtResource("3_xrstg")
+priority = 10
 tween_resource = SubResource("Resource_jjqwg")
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"
