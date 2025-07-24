@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://obdm5dpt76l3"]
+[gd_scene load_steps=11 format=3 uid="uid://obdm5dpt76l3"]
 
 [ext_resource type="Script" uid="uid://dcayyvsc035wm" path="res://Scripts/Character/Player/Player.gd" id="1_5qcei"]
 [ext_resource type="PackedScene" uid="uid://bk1yjmi5mpt8o" path="res://Scene/Components/MovementComp/MovementComponent.tscn" id="2_tsjj8"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_xrstg"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_sixoq"]
+[ext_resource type="Script" uid="uid://b8hhnqsugykly" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="5_sixoq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dvft2"]
 albedo_color = Color(0.81, 0.1782, 0.1782, 1)
@@ -15,14 +16,29 @@ material = SubResource("StandardMaterial3D_dvft2")
 
 [sub_resource type="Resource" id="Resource_jjqwg"]
 script = ExtResource("4_sixoq")
-duration = 1.0
+duration = 0.0
 transition = 0
 ease = 2
+
+[sub_resource type="Resource" id="Resource_ppbjp"]
+script = ExtResource("5_sixoq")
+keep_aspect = 1
+cull_mask = 3
+h_offset = 0.0
+v_offset = 0.0
+projection = 0
+fov = 90.0
+size = 1.0
+frustum_offset = Vector2(0, 0)
+near = 0.05
+far = 4000.0
+metadata/_custom_type_script = "uid://b8hhnqsugykly"
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
 script = ExtResource("1_5qcei")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("CapsuleMesh_5qcei")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -48,4 +64,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.719261, 0)
 script = ExtResource("3_xrstg")
 priority = 10
 tween_resource = SubResource("Resource_jjqwg")
+camera_3d_resource = SubResource("Resource_ppbjp")
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"

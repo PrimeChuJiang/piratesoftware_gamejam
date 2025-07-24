@@ -6,5 +6,5 @@
 [node name="BaseActor" type="Node3D"]
 script = ExtResource("1_agadj")
 
-[node name="Area3D" parent="." node_paths=PackedStringArray("parent_actor") instance=ExtResource("2_ss6ka")]
+[node name="InteractionComponent" parent="." node_paths=PackedStringArray("parent_actor") instance=ExtResource("2_ss6ka")]
 parent_actor = NodePath("..")

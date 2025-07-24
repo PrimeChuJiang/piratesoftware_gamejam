@@ -22,6 +22,7 @@ func _ready():
 	
 
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
@@ -45,11 +46,11 @@ func _set_map_phantom_binding():
 	if map_camera == null : 
 		_get_camera()
 	var map_node : Node = get_tree().current_scene
-	var phantom : PhantomCamera3D = map_node.get_node("player_follower_phantom") as PhantomCamera3D
-	if phantom != null :
-		map_phantom = phantom
-		map_phantom.follow_target = head_marker
-		movement_component.look_at_target = map_phantom
+	#var phantom : PhantomCamera3D = map_node.get_node("player_follower_phantom") as PhantomCamera3D
+	#if phantom != null :
+		#map_phantom = phantom
+		#map_phantom.follow_target = head_marker
+	movement_component.look_at_target = map_phantom
 
 #region 测试代码
 ## 应用 Demo 特定的默认值
@@ -60,4 +61,12 @@ func _apply_demo_defaults():
 			# if config_manager.get_value(section, key, null) != demo_defaults[section][key]:
 			config_manager.set_value(section, key, GameConfigs.config_defaults[section][key])
 	logger.info("Demo 默认值已应用。")
+
+func _input(event):
+	if event.is_action_pressed("ui_accept"):
+		match Input.mouse_mode :
+			Input.MOUSE_MODE_VISIBLE:
+				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			Input.MOUSE_MODE_CAPTURED:
+				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 #region
