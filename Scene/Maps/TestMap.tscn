@@ -1,61 +1,10 @@
 [gd_scene load_steps=11 format=3 uid="uid://bk612j05hlsmf"]
 
 [ext_resource type="PackedScene" uid="uid://cuyaaq22mxccd" path="res://Scene/Maps/BaseMap.tscn" id="1_8yfuk"]
-[ext_resource type="Texture2D" uid="uid://dpq2w5skirqxq" path="res://icon.svg" id="2_g0vs8"]
 [ext_resource type="PackedScene" uid="uid://obdm5dpt76l3" path="res://Scene/Charactor/Player/Player.tscn" id="3_g0vs8"]
+[ext_resource type="Texture2D" uid="uid://dkb5vy7xn1u4i" path="res://Assets/RoomTest/room5/room5-room.png" id="4_edpvp"]
+[ext_resource type="Texture2D" uid="uid://c1p0wfmhwid03" path="res://Assets/RoomTest/room5/art-Character-No.5.png" id="5_tdor2"]
 [ext_resource type="PackedScene" uid="uid://dfrdcrpkdir1t" path="res://Scene/Maps/corridor.tscn" id="6_x8841"]
-
-[sub_resource type="GDScript" id="GDScript_8yfuk"]
-script/source = "extends Node3D
-
-@onready var target_sprite3d = $Sprite3D # 目标Sprite3D
-@onready var screen_sprite2d = $Sprite2D  # 用于显示的2D精灵
-@onready var main_camera = $\"../map_camera\"  # 主相机
-@export var base_distance : float = 1.0  # 基准距离（在此处大小为100%）
-@export var base_scale : float = 1.0  # 基准缩放比例
-
-
-func _process(delta):
-	return
-	# 转换3D坐标到屏幕坐标
-	var screen_pos = main_camera.unproject_position(target_sprite3d.global_position)
-	
-	# 转换为当前节点的本地坐标
-	#var local_pos = to_local(screen_pos)
-	
-	# 设置2D精灵位置
-	screen_sprite2d.position = screen_pos
-	
-	# 同步大小（根据距离调整缩放）
-	sync_sprite_size()
-	
-	# 检查可见性
-	screen_sprite2d.visible = is_sprite3d_visible()
-
-# 同步2D精灵与3D精灵的视觉大小
-func sync_sprite_size():
-	# 计算3D精灵到相机的距离
-	var distance = main_camera.global_position.distance_to(target_sprite3d.global_position)
-	
-	# 根据距离计算缩放比例（距离越远，缩放越小）
-	var scale_factor = base_distance / distance * base_scale
-	
-	# 应用缩放（限制最小缩放范围避免过大或过小）
-	screen_sprite2d.scale = Vector2(
-		clamp(scale_factor, 0.1, 5.0),  # 最小0.1，最大5.0
-		clamp(scale_factor, 0.1, 5.0)
-	)
-
-# 检查Sprite3D是否在相机视野内
-func is_sprite3d_visible() -> bool:
-	pass
-	return main_camera.is_position_in_frustum(target_sprite3d.global_position)
-
-# 手动设置2D精灵位置
-func set_custom_position(pos: Vector2):
-	pass
-	screen_sprite2d.position = pos
-"
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8yfuk"]
 
@@ -84,7 +33,6 @@ fov = 90.0
 
 [node name="Node3D" type="Node3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.47244, -1.95145, 1.3963)
-script = SubResource("GDScript_8yfuk")
 
 [node name="Sprite2D" type="Sprite2D" parent="Node3D" index="0"]
 
@@ -116,6 +64,20 @@ layer = -2
 [node name="corridor" parent="." index="7" instance=ExtResource("6_x8841")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.114932, -15.7264)
 
+[node name="wall" parent="corridor" index="0"]
+visible = false
+
+[node name="ceiling" parent="corridor" index="3"]
+visible = false
+
+[node name="Sprite3D" type="Sprite3D" parent="corridor" index="16"]
+transform = Transform3D(-5.81358e-09, 0, 1, 0, 0.132999, 0, -0.132999, 0, -4.37114e-08, 2.59, 1.29341, 6.806)
+texture = ExtResource("4_edpvp")
+
+[node name="Sprite3D2" type="Sprite3D" parent="corridor" index="17"]
+transform = Transform3D(-5.81358e-09, 0, 1, 0, 0.132999, 0, -0.132999, 0, -4.37114e-08, 2.57771, 1.29341, 6.806)
+texture = ExtResource("5_tdor2")
+
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." index="8"]
 visible = false
 light_mask = 0
@@ -136,23 +98,19 @@ offset_right = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Sprite3D" type="Sprite3D" parent="." index="9"]
-transform = Transform3D(-1.66354e-08, 0, -1, 0, 0.380574, 0, 0.380574, 0, -4.37114e-08, 2.41715, 1.34387, -9.18257)
-texture = ExtResource("2_g0vs8")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="." index="10"]
+[node name="OmniLight3D" type="OmniLight3D" parent="." index="9"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61097, -21.6517)
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="." index="11"]
+[node name="OmniLight3D2" type="OmniLight3D" parent="." index="10"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61097, -14.455)
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 
-[node name="OmniLight3D3" type="OmniLight3D" parent="." index="12"]
+[node name="OmniLight3D3" type="OmniLight3D" parent="." index="11"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.358993, 1.53217, -10.0301)
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
