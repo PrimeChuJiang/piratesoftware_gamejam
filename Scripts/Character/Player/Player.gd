@@ -4,31 +4,51 @@ class_name Player
 
 const LogManager = CoreSystem.Logger
 
+@export var swing_strength: float = 0.2  # 摆动幅度
+@export var swing_speed: float = 10.0     # 摆动速度
+@export var min_move_speed: float = 0.1  # 触发摆动的最小移动速度
+
 @onready var head_marker = $head_marker
 @onready var movement_component = $MovementComponent
+@onready var phantom_camera_3d = $PhantomCamera3D
 
 const ConfigManager = CoreSystem.ConfigManager
 var config_manager : ConfigManager = CoreSystem.config_manager
 
+var arrow = preload("res://Assets/MouseCursor/arrow.png")
+
 var logger : LogManager = CoreSystem.logger
 var map_camera : Camera3D = null
-var map_phantom : PhantomCamera3D = null
+
+var move_able : bool = true
+var base_position: Vector3  # 相机基础位置
+var swing_offset: float = 0  # 摆动偏移量
+var time: float = 0  # 时间计数器
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_get_camera()
-	_set_map_phantom_binding()
 	_apply_demo_defaults()
-	
+	base_position = phantom_camera_3d.position
+	Input.set_custom_mouse_cursor(arrow)
 
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _process(_delta : float):
+	var move_speed : float = Vector2(velocity.x, velocity.z).length()
+	if move_speed > min_move_speed:
+		time += _delta
+		swing_offset = sin(time * swing_speed) * swing_strength * (move_speed / movement_component.max_speed)
+	else :
+		swing_offset = lerp(swing_offset, 0.0, _delta * 5)
+	phantom_camera_3d.position = base_position + Vector3(0, swing_offset, 0)
 
 func _physics_process(delta):
-	move_and_slide()
+	if move_able:
+		move_and_slide()
+	else:
+		velocity = Vector3.ZERO
 
 func _get_camera() -> Camera3D:
 	#for camera in get_tree().current_scene.get_nodes_in_group("map_camera"):
@@ -42,16 +62,6 @@ func _get_camera() -> Camera3D:
 	return null
 	pass
 
-func _set_map_phantom_binding():
-	if map_camera == null : 
-		_get_camera()
-	var map_node : Node = get_tree().current_scene
-	#var phantom : PhantomCamera3D = map_node.get_node("player_follower_phantom") as PhantomCamera3D
-	#if phantom != null :
-		#map_phantom = phantom
-		#map_phantom.follow_target = head_marker
-	movement_component.look_at_target = map_phantom
-
 #region 测试代码
 ## 应用 Demo 特定的默认值
 func _apply_demo_defaults():
@@ -62,11 +72,11 @@ func _apply_demo_defaults():
 			config_manager.set_value(section, key, GameConfigs.config_defaults[section][key])
 	logger.info("Demo 默认值已应用。")
 
-func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		match Input.mouse_mode :
-			Input.MOUSE_MODE_VISIBLE:
-				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			Input.MOUSE_MODE_CAPTURED:
-				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+#func _input(event):
+	#if event.is_action_pressed("ui_accept"):
+		#match Input.mouse_mode :
+			#Input.MOUSE_MODE_VISIBLE:
+				#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			#Input.MOUSE_MODE_CAPTURED:
+				#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 #region

@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://bk612j05hlsmf"]
+[gd_scene load_steps=12 format=3 uid="uid://bk612j05hlsmf"]
 
 [ext_resource type="PackedScene" uid="uid://cuyaaq22mxccd" path="res://Scene/Maps/BaseMap.tscn" id="1_8yfuk"]
 [ext_resource type="PackedScene" uid="uid://obdm5dpt76l3" path="res://Scene/Charactor/Player/Player.tscn" id="3_g0vs8"]
 [ext_resource type="Texture2D" uid="uid://dkb5vy7xn1u4i" path="res://Assets/RoomTest/room5/room5-room.png" id="4_edpvp"]
 [ext_resource type="Texture2D" uid="uid://c1p0wfmhwid03" path="res://Assets/RoomTest/room5/art-Character-No.5.png" id="5_tdor2"]
-[ext_resource type="PackedScene" uid="uid://dfrdcrpkdir1t" path="res://Scene/Maps/corridor.tscn" id="6_x8841"]
+[ext_resource type="PackedScene" uid="uid://pbq5ndfyb3di" path="res://Scene/Actor/Door.tscn" id="5_x8841"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8yfuk"]
 
@@ -17,17 +17,19 @@ background_energy_multiplier = 2.87
 sky = SubResource("Sky_g0vs8")
 ambient_light_source = 2
 
-[sub_resource type="BoxMesh" id="BoxMesh_g0vs8"]
-size = Vector3(10, 0.1, 50)
+[sub_resource type="BoxMesh" id="BoxMesh_tdor2"]
+size = Vector3(5, 4, 20)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_edpvp"]
-size = Vector3(10, 0.1, 50)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x8841"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_x8841"]
+size = Vector3(0.1, 3, 1.5)
 
 [node name="BaseMap" instance=ExtResource("1_8yfuk")]
 
 [node name="map_camera" parent="." index="0"]
 physics_interpolation_mode = 1
-transform = Transform3D(0.799743, 0, 0.0202716, 0, 0.8, 0, -0.0202716, 0, 0.799743, 0.0524578, 1.57541, -6.01326)
+transform = Transform3D(0.799743, 0, 0.0202716, 0, 0.8, 0, -0.0202716, 0, 0.799743, 0.0524578, 0.929958, -6.01326)
 cull_mask = 3
 fov = 90.0
 
@@ -42,78 +44,88 @@ environment = SubResource("Environment_edpvp")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="3"]
 transform = Transform3D(1, 0, 0, 0, 0.930507, 0.366274, 0, -0.366274, 0.930507, 0, 0, 0)
 visible = false
-light_color = Color(0.733428, 0.699818, 0, 1)
 shadow_enabled = true
 
-[node name="CharacterBody3D" parent="." index="4" instance=ExtResource("3_g0vs8")]
-transform = Transform3D(0.799743, 0, 0.0202716, 0, 0.8, 0, -0.0202716, 0, 0.799743, 0.0524578, 1, -6.01326)
+[node name="Player" parent="." index="4" instance=ExtResource("3_g0vs8")]
+transform = Transform3D(0.799743, 0, 0.0202716, 0, 0.8, 0, -0.0202716, 0, 0.799743, 0.0524578, 0.369958, -6.01326)
 up_direction = Vector3(0, 0.980581, 0.196116)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="5"]
-layers = 2
-mesh = SubResource("BoxMesh_g0vs8")
+[node name="CSGMesh3D" type="CSGMesh3D" parent="." index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52717, -14.788)
+flip_faces = true
+mesh = SubResource("BoxMesh_tdor2")
+material = SubResource("StandardMaterial3D_x8841")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" index="0"]
+[node name="hole1" type="CSGMesh3D" parent="CSGMesh3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.544, -0.525625, -7.14318)
+mesh = SubResource("BoxMesh_x8841")
+material = SubResource("StandardMaterial3D_x8841")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" index="0"]
-shape = SubResource("BoxShape3D_edpvp")
+[node name="hole5" type="CSGMesh3D" parent="CSGMesh3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.544, -0.525625, -7.143)
+mesh = SubResource("BoxMesh_x8841")
+material = SubResource("StandardMaterial3D_x8841")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." index="6"]
-layer = -2
+[node name="hole2" type="CSGMesh3D" parent="CSGMesh3D" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.544, -0.525625, -2.51753)
+mesh = SubResource("BoxMesh_x8841")
+material = SubResource("StandardMaterial3D_x8841")
 
-[node name="corridor" parent="." index="7" instance=ExtResource("6_x8841")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.114932, -15.7264)
+[node name="hole6" type="CSGMesh3D" parent="CSGMesh3D" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.544, -0.525625, -2.518)
+mesh = SubResource("BoxMesh_x8841")
+material = SubResource("StandardMaterial3D_x8841")
 
-[node name="wall" parent="corridor" index="0"]
-visible = false
+[node name="hole3" type="CSGMesh3D" parent="CSGMesh3D" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.544, -0.525625, 1.65957)
+mesh = SubResource("BoxMesh_x8841")
+material = SubResource("StandardMaterial3D_x8841")
 
-[node name="ceiling" parent="corridor" index="3"]
-visible = false
+[node name="hole7" type="CSGMesh3D" parent="CSGMesh3D" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.544, -0.525625, 1.66)
+mesh = SubResource("BoxMesh_x8841")
+material = SubResource("StandardMaterial3D_x8841")
 
-[node name="Sprite3D" type="Sprite3D" parent="corridor" index="16"]
-transform = Transform3D(-5.81358e-09, 0, 1, 0, 0.132999, 0, -0.132999, 0, -4.37114e-08, 2.59, 1.29341, 6.806)
+[node name="hole4" type="CSGMesh3D" parent="CSGMesh3D" index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.54285, -0.525625, 6.90681)
+mesh = SubResource("BoxMesh_x8841")
+material = SubResource("StandardMaterial3D_x8841")
+
+[node name="hole8" type="CSGMesh3D" parent="CSGMesh3D" index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.544, -0.525625, 6.9)
+mesh = SubResource("BoxMesh_x8841")
+material = SubResource("StandardMaterial3D_x8841")
+
+[node name="Sprite3D" type="Sprite3D" parent="." index="6"]
+transform = Transform3D(-5.81358e-09, 0, -1, 0, 0.132999, 0, 0.132999, 0, -4.37114e-08, 3.826, 1.22592, -8.011)
 texture = ExtResource("4_edpvp")
 
-[node name="Sprite3D2" type="Sprite3D" parent="corridor" index="17"]
-transform = Transform3D(-5.81358e-09, 0, 1, 0, 0.132999, 0, -0.132999, 0, -4.37114e-08, 2.57771, 1.29341, 6.806)
+[node name="Sprite3D2" type="Sprite3D" parent="." index="7"]
+transform = Transform3D(-5.81358e-09, 0, -1, 0, 0.132999, 0, 0.132999, 0, -4.37114e-08, 3.80516, 1.22592, -8.011)
 texture = ExtResource("5_tdor2")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="." index="8"]
-visible = false
-light_mask = 0
-offset_right = 1153.0
-offset_bottom = 651.0
+[node name="Light" type="Node3D" parent="." index="8"]
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" index="0"]
-handle_input_locally = false
-render_target_update_mode = 0
-
-[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport" index="0"]
-light_mask = 0
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 337.0
-offset_right = -3.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="OmniLight3D" type="OmniLight3D" parent="." index="9"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Light" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61097, -21.6517)
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="." index="10"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61097, -14.455)
+[node name="OmniLight3D2" type="OmniLight3D" parent="Light" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61097, -15.0674)
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 
-[node name="OmniLight3D3" type="OmniLight3D" parent="." index="11"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.358993, 1.53217, -10.0301)
+[node name="OmniLight3D3" type="OmniLight3D" parent="Light" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.358993, 1.53217, -8.59316)
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 
-[editable path="corridor"]
+[node name="BaseActor" parent="." index="9" instance=ExtResource("5_x8841")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.543, -0.485969, -7.881)
+
+[editable path="BaseActor"]
+[editable path="BaseActor/InteractionComponent"]

@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://obdm5dpt76l3"]
+[gd_scene load_steps=13 format=3 uid="uid://obdm5dpt76l3"]
 
 [ext_resource type="Script" uid="uid://dcayyvsc035wm" path="res://Scripts/Character/Player/Player.gd" id="1_5qcei"]
 [ext_resource type="PackedScene" uid="uid://bk1yjmi5mpt8o" path="res://Scene/Components/MovementComp/MovementComponent.tscn" id="2_tsjj8"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_xrstg"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_sixoq"]
 [ext_resource type="Script" uid="uid://b8hhnqsugykly" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="5_sixoq"]
+[ext_resource type="PackedScene" uid="uid://cisd0m8esnogm" path="res://Scene/Components/InteractionComp/InteractionComp.tscn" id="6_jjqwg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dvft2"]
 albedo_color = Color(0.81, 0.1782, 0.1782, 1)
@@ -16,7 +17,7 @@ material = SubResource("StandardMaterial3D_dvft2")
 
 [sub_resource type="Resource" id="Resource_jjqwg"]
 script = ExtResource("4_sixoq")
-duration = 0.0
+duration = 0.1
 transition = 0
 ease = 2
 
@@ -34,7 +35,11 @@ near = 0.05
 far = 4000.0
 metadata/_custom_type_script = "uid://b8hhnqsugykly"
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jjqwg"]
+height = 0.75
+radius = 0.2
+
+[node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_5qcei")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -46,7 +51,7 @@ shape = SubResource("CapsuleShape3D_tsjj8")
 
 [node name="MovementComponent" parent="." node_paths=PackedStringArray("character", "first_person_phantom") instance=ExtResource("2_tsjj8")]
 character = NodePath("..")
-max_speed = 5.0
+max_speed = 3.0
 speed_up_time = 0.1
 speed_down_time = 0.05
 jump_up_time = 0.3
@@ -60,9 +65,25 @@ first_person_phantom = NodePath("../PhantomCamera3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.676142, 0)
 
 [node name="PhantomCamera3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.719261, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 script = ExtResource("3_xrstg")
 priority = 10
 tween_resource = SubResource("Resource_jjqwg")
 camera_3d_resource = SubResource("Resource_ppbjp")
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="PhantomCamera3D"]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0, 0)
+remote_path = NodePath("../../InteractionComponent")
+
+[node name="InteractionComponent" parent="." instance=ExtResource("6_jjqwg")]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0.7, 0)
+script = null
+
+[node name="CollisionShape3D" parent="InteractionComponent" index="0"]
+transform = Transform3D(1, 8.74228e-08, -8.74228e-08, -8.74228e-08, -4.37114e-08, -1, -8.74228e-08, 1, -4.37114e-08, 0, 0, 0.875)
+shape = SubResource("CylinderShape3D_jjqwg")
+
+[connection signal="area_entered" from="InteractionComponent" to="InteractionComponent" method="_on_area_entered"]
+
+[editable path="InteractionComponent"]
