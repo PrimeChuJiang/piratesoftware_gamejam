@@ -36,7 +36,7 @@ func _quit_door(_player: Player):
 	interaction_component.monitorable = true
 	interaction_component.monitorable = true
 
-func start_interact():
+func open_door():
 	# 播放动画
 	animation_player.play("open")
 	# 提高相机优先级

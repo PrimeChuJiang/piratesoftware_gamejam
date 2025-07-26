@@ -12,7 +12,7 @@ class_name InteractionUI
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var current_scene : Node = get_tree().current_scene
+	var current_scene : Node = get_tree().get_nodes_in_group("subviewport")[0].get_child(0)
 	_camera = current_scene.get_node("map_camera")
 	_player = current_scene.get_node("Player")
 	
@@ -36,9 +36,10 @@ func _process(delta):
 func _input(event:InputEvent):
 	if event.is_action_pressed("Space"):
 		_player.move_able = false
-		_owner.start_interact()
+		_owner.open_door()
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		var in_room_ui : InroomUI = in_room_ui_packedscene.instantiate() as InroomUI
 		in_room_ui._owner = _owner
 		in_room_ui._player = _player
+		in_room_ui._camera = _camera
 		Hud.add_child(in_room_ui)

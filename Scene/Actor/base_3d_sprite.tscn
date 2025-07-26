@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://cg3mim5sk5go3"]
+
+[ext_resource type="PackedScene" uid="uid://c2iir4amisf5" path="res://Scene/Actor/BaseActor.tscn" id="1_0hj1k"]
+[ext_resource type="Script" uid="uid://nn43pih2xq01" path="res://Scripts/Actor/Base3DSprite.gd" id="2_sg2c8"]
+[ext_resource type="Shader" uid="uid://dkg4khfi0vep" path="res://Shaders/outline_shader.gdshader" id="3_sg2c8"]
+[ext_resource type="Texture2D" uid="uid://b74bdh47dp3cr" path="res://Assets/RoomTest/room5/art-Item-pistol.png" id="4_sg2c8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sg2c8"]
+size = Vector3(1.86658, 3.54027, 0.0971069)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4xwxn"]
+render_priority = 0
+shader = ExtResource("3_sg2c8")
+shader_parameter/sprite_texture = ExtResource("4_sg2c8")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/glowSize = 5.0
+shader_parameter/glowDensity = 3
+shader_parameter/glowRadialCoverage = 4
+shader_parameter/glowAngle = 1.57
+shader_parameter/glowSharpness = 1.0
+shader_parameter/alphaThreshold = 0.2
+
+[sub_resource type="GDScript" id="GDScript_rnsnr"]
+script/source = "extends Sprite3D
+
+var out_line_len : float :
+	set(value):
+		out_line_len = value
+		material_override.set_shader_parameter(\"glowSize\", out_line_len)
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	if texture != null:
+		material_override.set_shader_parameter(\"sprite_texture\", texture)
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
+[node name="Base3DSprite" instance=ExtResource("1_0hj1k")]
+script = ExtResource("2_sg2c8")
+
+[node name="InteractionComponent" parent="." index="0"]
+collision_layer = 7
+collision_mask = 7
+interaction_type = 1
+
+[node name="CollisionShape3D" parent="InteractionComponent" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0499878, 0.0119705, -0.0201111)
+shape = SubResource("BoxShape3D_sg2c8")
+
+[node name="Sprite3D" type="Sprite3D" parent="." index="1"]
+material_override = SubResource("ShaderMaterial_4xwxn")
+texture = ExtResource("4_sg2c8")
+script = SubResource("GDScript_rnsnr")
+
+[editable path="InteractionComponent"]

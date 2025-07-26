@@ -111,7 +111,7 @@ func _character_movement(input_dir : Vector2, _delta : float):
 		current_speed.z = move_toward(current_speed.z, target_velocity.z, speed_up_acc* _delta)
 		current_speed.x = move_toward(current_speed.x, target_velocity.x, speed_up_acc* _delta)
 
-		print(current_speed)
+		#print(current_speed)
 	else:
 		var speed = current_speed.length()
 		if speed > 0 :

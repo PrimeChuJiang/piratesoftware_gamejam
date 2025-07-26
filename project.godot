@@ -36,6 +36,7 @@ folder_colors={
 [global_group]
 
 map_camera=""
+subviewport=""
 
 [input]
 

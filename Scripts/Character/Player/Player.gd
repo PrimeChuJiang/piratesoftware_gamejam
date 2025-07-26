@@ -25,6 +25,8 @@ var base_position: Vector3  # 相机基础位置
 var swing_offset: float = 0  # 摆动偏移量
 var time: float = 0  # 时间计数器
 
+var current_hovering_node : Base3DSprite
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_get_camera()
@@ -43,6 +45,8 @@ func _process(_delta : float):
 	else :
 		swing_offset = lerp(swing_offset, 0.0, _delta * 5)
 	phantom_camera_3d.position = base_position + Vector3(0, swing_offset, 0)
+	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+		spawn_ray_cast()
 
 func _physics_process(delta):
 	if move_able:
@@ -55,7 +59,7 @@ func _get_camera() -> Camera3D:
 	if map_camera != null : 
 		return map_camera
 	else:
-		var map_node : Node = get_tree().current_scene
+		var map_node : Node = get_tree().get_nodes_in_group("subviewport")[0].get_child(0)
 		map_camera = map_node.get_node("map_camera") as Camera3D
 		return map_camera
 	logger.error("_get_camera can't find a map camera check the map")
@@ -71,6 +75,30 @@ func _apply_demo_defaults():
 			# if config_manager.get_value(section, key, null) != demo_defaults[section][key]:
 			config_manager.set_value(section, key, GameConfigs.config_defaults[section][key])
 	logger.info("Demo 默认值已应用。")
+
+func spawn_ray_cast():
+	var mouse_pos : Vector2 = get_viewport().get_mouse_position()
+	# 创建射线
+	var ray_start = map_camera.project_ray_origin(mouse_pos)
+	var ray_end = ray_start + map_camera.project_ray_normal(mouse_pos) * 10000
+	# 射线检测
+	var space_state : PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var ray_query_param :PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
+	ray_query_param.collision_mask = 2
+	ray_query_param.from = ray_start
+	ray_query_param.to = ray_end
+	var result : Dictionary = space_state.intersect_ray(ray_query_param)
+	
+	if result:
+		print(result["collider"])
+	
+	if result and result["collider"] == InteractionComp :
+		var _collider : InteractionComp = result["collider"]
+		var _collider_owner : Base3DSprite = _collider.parent_actor as Base3DSprite
+		if _collider_owner == null : return
+		if current_hovering_node != _collider_owner :
+			current_hovering_node.hovering = false
+			_collider_owner.hovering = true
 
 #func _input(event):
 	#if event.is_action_pressed("ui_accept"):

@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnhnculnmihlq"]
+[gd_scene load_steps=5 format=3 uid="uid://dnhnculnmihlq"]
+
+[ext_resource type="PackedScene" uid="uid://bk612j05hlsmf" path="res://Scene/Maps/TestMap.tscn" id="1_hlgyn"]
+[ext_resource type="Texture2D" uid="uid://b74bdh47dp3cr" path="res://Assets/RoomTest/room5/art-Item-pistol.png" id="2_ysmpa"]
 
 [sub_resource type="GDScript" id="GDScript_hlgyn"]
-script/source = "extends Sprite2D
+resource_name = "TestMap"
+script/source = "extends Node2D
+
+@onready var sub_viewport = $SubViewport
 
 
 # Called when the node enters the scene tree for the first time.
@@ -13,29 +19,33 @@ func _ready():
 func _process(delta):
 	pass
 
+func _unhandled_input(event):
+	#sub_viewport.push_unhandled_input(event)
+	sub_viewport.push_input(event)
 
-func _on_area_2d_mouse_entered():
-	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-		print(\"检测到鼠标\")
+func _input(event):
+	sub_viewport.push_input(event)
+	#sub_viewport.push_text_input()
 "
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hlgyn"]
-size = Vector2(1162, 659)
+[sub_resource type="ViewportTexture" id="ViewportTexture_hlgyn"]
+viewport_path = NodePath("SubViewport")
 
 [node name="Sprite2D" type="Node2D"]
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(578, 326.5)
-scale = Vector2(2.24219, 1.25586)
-
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-visible = false
 script = SubResource("GDScript_hlgyn")
 
-[node name="Area2D" type="Area2D" parent="Sprite2D2"]
+[node name="SubViewport" type="SubViewport" parent="." groups=["subviewport"]]
+transparent_bg = true
+size = Vector2i(1152, 648)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D2/Area2D"]
-position = Vector2(571, 319.5)
-shape = SubResource("RectangleShape2D_hlgyn")
+[node name="BaseMap" parent="SubViewport" instance=ExtResource("1_hlgyn")]
 
-[connection signal="mouse_entered" from="Sprite2D2/Area2D" to="Sprite2D2" method="_on_area_2d_mouse_entered"]
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(581, 310)
+texture = ExtResource("2_ysmpa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(577, 326)
+texture = SubResource("ViewportTexture_hlgyn")
+
+[node name="Parallax2D" type="Parallax2D" parent="."]

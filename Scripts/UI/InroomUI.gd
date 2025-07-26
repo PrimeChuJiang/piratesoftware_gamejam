@@ -4,6 +4,7 @@ class_name InroomUI
 
 @export var _owner : Door
 @export var _player : Player
+@export var _camera : Camera3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,7 +13,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if _camera == null : return
+	
+	
 
 func _input(event: InputEvent):
 	if event.is_action_pressed("Q"):
