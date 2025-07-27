@@ -2,6 +2,8 @@ extends BaseActor
 
 class_name Door
 
+@export var room : PackedScene = null
+
 @onready var animation_player = $AnimationPlayer
 @onready var phantom = $PhantomCamera3D
 @onready var interact_ui : PackedScene = preload("res://Scene/UI/interact_ui.tscn")

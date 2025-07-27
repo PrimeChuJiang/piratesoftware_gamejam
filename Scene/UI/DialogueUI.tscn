@@ -1,11 +1,17 @@
-[gd_scene load_steps=9 format=3 uid="uid://dd1ehbprow1eb"]
+[gd_scene load_steps=12 format=3 uid="uid://dd1ehbprow1eb"]
 
+[ext_resource type="Script" uid="uid://uayl4lxklb8j" path="res://Scripts/UI/dialogue_ui.gd" id="1_i6rys"]
 [ext_resource type="Shader" uid="uid://cnjpnhqp5ktba" path="res://Shaders/dialogui_shader.gdshader" id="1_k428r"]
-[ext_resource type="Texture2D" uid="uid://dpq2w5skirqxq" path="res://icon.svg" id="2_ln7yg"]
+[ext_resource type="Shader" uid="uid://bm7w7atwu0mo4" path="res://Shaders/gause.gdshader" id="2_xg0ao"]
 [ext_resource type="Script" uid="uid://g32um0mltv5d" path="res://addons/dialogue_manager/dialogue_label.gd" id="3_i6rys"]
+[ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="4_pgprf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hnmvu"]
+shader = ExtResource("2_xg0ao")
+shader_parameter/sigma = 3.3
 
 [sub_resource type="Curve" id="Curve_ln7yg"]
-_data = [Vector2(0, 1), 0.0, -0.987031, 0, 1, Vector2(0.995261, 0.0176471), -0.987031, 0.0, 1, 0]
+_data = [Vector2(0, 1), -0.81608, -1.0, 1, 1, Vector2(1, 0), -1.0, -0.81608, 1, 1]
 point_count = 2
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_i6rys"]
@@ -19,10 +25,10 @@ noise = SubResource("FastNoiseLite_i6rys")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xg0ao"]
 shader = ExtResource("1_k428r")
 shader_parameter/deformation_sampler = SubResource("NoiseTexture2D_pgprf")
-shader_parameter/radius = 12.59
+shader_parameter/radius = 1.0
 shader_parameter/box_size = Vector2(100, 100)
 shader_parameter/box_padding = 15.0
-shader_parameter/wobble_amount = 0.2
+shader_parameter/wobble_amount = 0.04
 shader_parameter/wobble_speed = 4.0
 shader_parameter/wobble_detail = 0.5
 
@@ -35,44 +41,85 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_i6rys")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_left = 193.0
-offset_top = 65.0
-offset_right = 442.0
-offset_bottom = 538.0
-texture = ExtResource("2_ln7yg")
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_hnmvu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="CanvasGroup" type="CanvasGroup" parent="."]
-self_modulate = Color(1, 1, 1, 0.498039)
+self_modulate = Color(1, 1, 1, 0.8)
 position = Vector2(733, 158)
 metadata/_edit_group_ = true
 
 [node name="Line2D" type="Line2D" parent="CanvasGroup"]
-points = PackedVector2Array(46, 59, -95, 73, -147, 92)
+points = PackedVector2Array(-95, 69, -232, 109)
 width = 96.0
 width_curve = SubResource("Curve_ln7yg")
 default_color = Color(0, 0, 0, 1)
 
 [node name="ColorRect" type="ColorRect" parent="CanvasGroup"]
 material = SubResource("ShaderMaterial_xg0ao")
-offset_left = -100.0
+offset_left = -190.0
 offset_top = -100.0
-offset_right = 346.0
+offset_right = 394.0
 offset_bottom = 153.0
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasGroup"]
-offset_left = -43.0
+offset_left = -124.0
 offset_top = -61.0
-offset_right = 288.0
-offset_bottom = 114.0
+offset_right = 334.0
+offset_bottom = 122.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_pgprf")
 
 [node name="DialogueLabel" type="RichTextLabel" parent="CanvasGroup/PanelContainer"]
 layout_mode = 2
+mouse_filter = 2
 text = "123123123123123123"
 script = ExtResource("3_i6rys")
 skip_pause_at_abbreviations = PackedStringArray("Mr", "Mrs", "Ms", "Dr", "etc", "eg", "ex")
 metadata/_custom_type_script = "uid://g32um0mltv5d"
+
+[node name="DialogueResponsesMenu" type="VBoxContainer" parent="." node_paths=PackedStringArray("response_template")]
+layout_mode = 0
+offset_left = 576.0
+offset_top = 298.0
+offset_right = 1098.0
+offset_bottom = 395.0
+theme_override_constants/separation = 10
+script = ExtResource("4_pgprf")
+response_template = NodePath("Button")
+
+[node name="Button" type="Button" parent="DialogueResponsesMenu"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+layer = 1
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="BigIcon" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+unique_name_in_owner = true
+position = Vector2(341, 503)
+scale = Vector2(0.4, 0.4)
+
+[node name="Marker2D" type="Marker2D" parent="ParallaxBackground/ParallaxLayer/BigIcon"]
+position = Vector2(406.667, -590)
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="finished_typing" from="CanvasGroup/PanelContainer/DialogueLabel" to="." method="_on_dialogue_label_finished_typing"]
+[connection signal="spoke" from="CanvasGroup/PanelContainer/DialogueLabel" to="." method="_on_dialogue_label_spoke"]
+[connection signal="response_selected" from="DialogueResponsesMenu" to="." method="_on_dialogue_responses_menu_response_selected"]

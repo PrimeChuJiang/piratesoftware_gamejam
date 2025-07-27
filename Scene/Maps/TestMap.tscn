@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=4 uid="uid://bk612j05hlsmf"]
+[gd_scene load_steps=15 format=4 uid="uid://bk612j05hlsmf"]
 
 [ext_resource type="PackedScene" uid="uid://cuyaaq22mxccd" path="res://Scene/Maps/BaseMap.tscn" id="1_8yfuk"]
 [ext_resource type="PackedScene" uid="uid://obdm5dpt76l3" path="res://Scene/Charactor/Player/Player.tscn" id="3_g0vs8"]
 [ext_resource type="Texture2D" uid="uid://dkb5vy7xn1u4i" path="res://Assets/RoomTest/room5/room5-room.png" id="4_edpvp"]
 [ext_resource type="Texture2D" uid="uid://c1p0wfmhwid03" path="res://Assets/RoomTest/room5/art-Character-No.5.png" id="5_tdor2"]
 [ext_resource type="PackedScene" uid="uid://pbq5ndfyb3di" path="res://Scene/Actor/Door.tscn" id="5_x8841"]
+[ext_resource type="PackedScene" uid="uid://dk5fewgoueupo" path="res://Scene/Maps/room_5.tscn" id="6_x8841"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8yfuk"]
 
@@ -42,30 +43,24 @@ data = PackedVector3Array(-2.5, 2, 10, 2.5, 2, -10, -2.5, 2, -10, 2.5, -2, -10, 
 
 [node name="BaseMap" instance=ExtResource("1_8yfuk")]
 
-[node name="map_camera" parent="." index="0"]
-physics_interpolation_mode = 1
-transform = Transform3D(0.0202716, 0, -0.799743, 0, 0.8, 0, 0.799743, 0, 0.0202716, 0.0524578, 0.929958, -7.81515)
-cull_mask = 3
-fov = 90.0
-
-[node name="Node3D" type="Node3D" parent="." index="1"]
+[node name="Node3D" type="Node3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.47244, -1.95145, 1.3963)
 
 [node name="Sprite2D" type="Sprite2D" parent="Node3D" index="0"]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="2"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="1"]
 environment = SubResource("Environment_edpvp")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="3"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 0.930507, 0.366274, 0, -0.366274, 0.930507, 0, 0, 0)
 visible = false
 shadow_enabled = true
 
-[node name="Player" parent="." index="4" instance=ExtResource("3_g0vs8")]
+[node name="Player" parent="." index="3" instance=ExtResource("3_g0vs8")]
 transform = Transform3D(0.0202716, 0, -0.799743, 0, 0.8, 0, 0.799743, 0, 0.0202716, 0.0524578, 0.369958, -7.81515)
 up_direction = Vector3(0, 0.980581, 0.196116)
 
-[node name="CSGMesh3D" type="CSGMesh3D" parent="." index="5"]
+[node name="CSGMesh3D" type="CSGMesh3D" parent="." index="4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52717, -14.788)
 visible = false
 flip_faces = true
@@ -112,7 +107,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.544, -0.525625, 6.9)
 mesh = SubResource("BoxMesh_x8841")
 material = SubResource("StandardMaterial3D_x8841")
 
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="." index="6"]
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="." index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52717, -14.788)
 mesh = SubResource("ArrayMesh_tdor2")
 
@@ -121,17 +116,17 @@ mesh = SubResource("ArrayMesh_tdor2")
 [node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="CSGBakedMeshInstance3D/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_x8841")
 
-[node name="Sprite3D" type="Sprite3D" parent="." index="7"]
+[node name="Sprite3D" type="Sprite3D" parent="." index="6"]
 transform = Transform3D(-5.81358e-09, 0, -1, 0, 0.132999, 0, 0.132999, 0, -4.37114e-08, 3.826, 1.22592, -8.011)
 visible = false
 texture = ExtResource("4_edpvp")
 
-[node name="Sprite3D2" type="Sprite3D" parent="." index="8"]
+[node name="Sprite3D2" type="Sprite3D" parent="." index="7"]
 transform = Transform3D(-5.81358e-09, 0, -1, 0, 0.132999, 0, 0.132999, 0, -4.37114e-08, 3.80516, 1.22592, -8.011)
 visible = false
 texture = ExtResource("5_tdor2")
 
-[node name="Light" type="Node3D" parent="." index="9"]
+[node name="Light" type="Node3D" parent="." index="8"]
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Light" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61097, -21.6517)
@@ -151,8 +146,14 @@ light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 
-[node name="BaseActor" parent="." index="10" instance=ExtResource("5_x8841")]
+[node name="BaseActor" parent="." index="9" instance=ExtResource("5_x8841")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.543, -0.485969, -7.881)
+room = ExtResource("6_x8841")
 
-[node name="Door" parent="." index="11" instance=ExtResource("5_x8841")]
+[node name="Door" parent="." index="10" instance=ExtResource("5_x8841")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -2.543, -0.486, -7.881)
+
+[node name="map_camera" parent="." index="11"]
+physics_interpolation_mode = 1
+transform = Transform3D(0.0253394, 0, -0.999679, 0, 1, 0, 0.999679, 0, 0.0253394, 0.0524578, 0.929958, -7.81515)
+fov = 90.0

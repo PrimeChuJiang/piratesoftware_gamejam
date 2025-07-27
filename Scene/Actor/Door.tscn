@@ -1,11 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://pbq5ndfyb3di"]
+[gd_scene load_steps=15 format=3 uid="uid://pbq5ndfyb3di"]
 
 [ext_resource type="PackedScene" uid="uid://c2iir4amisf5" path="res://Scene/Actor/BaseActor.tscn" id="1_q7nm1"]
 [ext_resource type="Script" uid="uid://6l6vdyoneqrr" path="res://Scripts/Actor/Door.gd" id="2_nit18"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_n0w7m"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_5r4ss"]
 [ext_resource type="Script" uid="uid://b8hhnqsugykly" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="5_5r4ss"]
-[ext_resource type="PackedScene" uid="uid://cg3mim5sk5go3" path="res://Scene/Actor/base_3d_sprite.tscn" id="6_0pikw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q7nm1"]
 size = Vector3(0.1, 3, 1.5)
@@ -69,18 +68,6 @@ tracks/4/keys = {
 "points": PackedFloat32Array(0.75, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SpriteGroup:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_nit18"]
 resource_name = "close"
@@ -141,18 +128,6 @@ tracks/4/keys = {
 "handle_modes": PackedInt32Array(0, 0),
 "points": PackedFloat32Array(-0.75, -0.25, 0, 0.25, 0, 0.75, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 1)
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SpriteGroup:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_rhl1w"]
@@ -215,18 +190,6 @@ tracks/4/keys = {
 "points": PackedFloat32Array(0.75, -0.25, 0, 0.25, 0, -0.75, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0.2, 1)
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SpriteGroup:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nit18"]
 _data = {
@@ -263,6 +226,7 @@ size = Vector3(0.1, 3, 1.5)
 
 [node name="Door" instance=ExtResource("1_q7nm1")]
 script = ExtResource("2_nit18")
+room = null
 
 [node name="CollisionShape3D" parent="InteractionComponent" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -289,16 +253,10 @@ tween_resource = SubResource("Resource_0pikw")
 camera_3d_resource = SubResource("Resource_bnxv1")
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"
 
-[node name="SpriteGroup" type="Node3D" parent="." index="4"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.4337, 1.42006, 0)
-visible = false
-
-[node name="Base3DSprite" parent="SpriteGroup" index="0" instance=ExtResource("6_0pikw")]
-
-[node name="Marker3D" type="Marker3D" parent="." index="5"]
+[node name="Marker3D" type="Marker3D" parent="." index="4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28034, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." index="6"]
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]

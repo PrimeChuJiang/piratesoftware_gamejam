@@ -1,18 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnhnculnmihlq"]
+[gd_scene load_steps=7 format=3 uid="uid://dnhnculnmihlq"]
 
 [ext_resource type="PackedScene" uid="uid://bk612j05hlsmf" path="res://Scene/Maps/TestMap.tscn" id="1_hlgyn"]
-[ext_resource type="Texture2D" uid="uid://b74bdh47dp3cr" path="res://Assets/RoomTest/room5/art-Item-pistol.png" id="2_ysmpa"]
+[ext_resource type="Shader" uid="uid://cdh25k844artq" path="res://Shaders/CRT.gdshader" id="1_xojxf"]
+[ext_resource type="PackedScene" uid="uid://dk5fewgoueupo" path="res://Scene/Maps/room_5.tscn" id="2_xojxf"]
 
 [sub_resource type="GDScript" id="GDScript_hlgyn"]
 resource_name = "TestMap"
 script/source = "extends Node2D
 
 @onready var sub_viewport = $SubViewport
+@onready var scene_root = $Scene_root
 
+const item_list_packed : PackedScene = preload(\"res://Scene/Maps/item_list_ui.tscn\")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	var item_list : ItemListUI = item_list_packed.instantiate()
+	Hud.add_child(item_list)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -23,16 +27,43 @@ func _unhandled_input(event):
 	#sub_viewport.push_unhandled_input(event)
 	sub_viewport.push_input(event)
 
-func _input(event):
-	sub_viewport.push_input(event)
-	#sub_viewport.push_text_input()
+#func _input(event):
+	#sub_viewport.push_input(event)
+	##sub_viewport.push_text_input()
 "
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_hlgyn"]
 viewport_path = NodePath("SubViewport")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_80bxd"]
+shader = ExtResource("1_xojxf")
+shader_parameter/overlay = false
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/brightness = 1.4
+shader_parameter/scanlines_opacity = 0.558
+shader_parameter/scanlines_width = 0.007
+shader_parameter/grille_opacity = 0.0
+shader_parameter/roll = false
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 0.0
+shader_parameter/roll_variation = 0.1
+shader_parameter/distort_intensity = 0.0
+shader_parameter/aberration = 0.03
+shader_parameter/noise_opacity = 0.0
+shader_parameter/noise_speed = 0.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/pixelate = false
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 0.49
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 1.03
+shader_parameter/vignette_opacity = 0.5
+
 [node name="Sprite2D" type="Node2D"]
 script = SubResource("GDScript_hlgyn")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
 
 [node name="SubViewport" type="SubViewport" parent="." groups=["subviewport"]]
 transparent_bg = true
@@ -40,12 +71,22 @@ size = Vector2i(1152, 648)
 
 [node name="BaseMap" parent="SubViewport" instance=ExtResource("1_hlgyn")]
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(581, 310)
-texture = ExtResource("2_ysmpa")
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(577, 326)
+z_index = 10
+position = Vector2(576, 324)
 texture = SubResource("ViewportTexture_hlgyn")
 
-[node name="Parallax2D" type="Parallax2D" parent="."]
+[node name="Scene_root" type="Node2D" parent="."]
+
+[node name="BaseRoom" parent="Scene_root" instance=ExtResource("2_xojxf")]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_80bxd")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+metadata/_edit_use_anchors_ = true

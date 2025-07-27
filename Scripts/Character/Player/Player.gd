@@ -27,14 +27,14 @@ var time: float = 0  # 时间计数器
 
 var current_hovering_node : Base3DSprite
 
+var items : Array[ResourceItem]
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_get_camera()
 	_apply_demo_defaults()
 	base_position = phantom_camera_3d.position
 	Input.set_custom_mouse_cursor(arrow)
-
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta : float):
@@ -45,14 +45,16 @@ func _process(_delta : float):
 	else :
 		swing_offset = lerp(swing_offset, 0.0, _delta * 5)
 	phantom_camera_3d.position = base_position + Vector3(0, swing_offset, 0)
-	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-		spawn_ray_cast()
 
 func _physics_process(delta):
 	if move_able:
 		move_and_slide()
 	else:
 		velocity = Vector3.ZERO
+
+func _input(event):
+	if event.is_action_pressed("Q"):
+		pass
 
 func _get_camera() -> Camera3D:
 	#for camera in get_tree().current_scene.get_nodes_in_group("map_camera"):
@@ -64,6 +66,20 @@ func _get_camera() -> Camera3D:
 		return map_camera
 	logger.error("_get_camera can't find a map camera check the map")
 	return null
+	pass
+
+func add_item(item : ResourceItem):
+	items.append(item)
+	Hud.get_node("ItemListUI").add_item(item)
+
+func remove_item(item : ResourceItem):
+	items.remove_at(items.find(item))
+	Hud.get_node("ItemListUI").remove_item(item)
+
+func up_gun():
+	pass
+
+func down_gun():
 	pass
 
 #region 测试代码

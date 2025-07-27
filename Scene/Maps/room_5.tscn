@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://dk5fewgoueupo"]
+
+[ext_resource type="PackedScene" uid="uid://bd8046whnvp14" path="res://Scene/Maps/base_room.tscn" id="1_ygycw"]
+[ext_resource type="Texture2D" uid="uid://cb3ejd034tg47" path="res://Assets/art/art-setting/room5/room5-room.png" id="2_qomx4"]
+[ext_resource type="Texture2D" uid="uid://b1x60t3or2chb" path="res://Assets/art/art-setting/room5/art-Character-No.5.png" id="3_qomx4"]
+[ext_resource type="PackedScene" uid="uid://c4olg7ne1pur4" path="res://Scene/Actor/test_item.tscn" id="4_06hnr"]
+[ext_resource type="PackedScene" uid="uid://cic50b7n38ym4" path="res://Scene/Actor/clock_man.tscn" id="4_xx0tf"]
+
+[node name="BaseRoom" instance=ExtResource("1_ygycw")]
+scroll_ignore_camera_zoom = true
+
+[node name="wall" type="Sprite2D" parent="ParalloxLayer" index="0"]
+position = Vector2(576, 324)
+scale = Vector2(0.3, 0.300139)
+texture = ExtResource("2_qomx4")
+
+[node name="Character" type="Sprite2D" parent="ParalloxLayer" index="1"]
+visible = false
+position = Vector2(576, 324)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_qomx4")
+
+[node name="ClockMan" parent="ParalloxLayer" index="2" instance=ExtResource("4_xx0tf")]
+position = Vector2(576, 324)
+
+[node name="TestItem" parent="ParalloxLayer" index="3" instance=ExtResource("4_06hnr")]
+position = Vector2(796, 531)

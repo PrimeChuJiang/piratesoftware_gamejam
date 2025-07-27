@@ -1,0 +1,103 @@
+[gd_scene load_steps=9 format=3 uid="uid://bt1evi7wixt5m"]
+
+[ext_resource type="Script" uid="uid://balfqp603l7br" path="res://Scripts/UI/item_detail_ui.gd" id="1_sfc4n"]
+[ext_resource type="Shader" uid="uid://dcvtjft7j7cxo" path="res://Shaders/center_cricle.gdshader" id="2_42462"]
+[ext_resource type="Shader" uid="uid://bm7w7atwu0mo4" path="res://Shaders/gause.gdshader" id="3_qywlw"]
+[ext_resource type="Shader" uid="uid://cwt5d25jm13ty" path="res://Shaders/borderfadeout.gdshader" id="4_h5xi0"]
+[ext_resource type="Script" uid="uid://g32um0mltv5d" path="res://addons/dialogue_manager/dialogue_label.gd" id="5_tfp2h"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sfc4n"]
+shader = ExtResource("2_42462")
+shader_parameter/circle_size = 0.78
+shader_parameter/feather = 0.31
+shader_parameter/circle_position = Vector2(0.5, 0.5)
+shader_parameter/screen_width = 1920.0
+shader_parameter/screen_height = 1080.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h5xi0"]
+shader = ExtResource("3_qywlw")
+shader_parameter/sigma = 3.3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tfp2h"]
+shader = ExtResource("4_h5xi0")
+shader_parameter/divide = -0.06
+shader_parameter/blur = 0.38
+shader_parameter/fade_width = 0.11
+
+[node name="ItemDetailUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sfc4n")
+
+[node name="TextureRect2" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_sfc4n")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.3)
+
+[node name="TextureRect3" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_h5xi0")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -269.0
+offset_top = -260.0
+offset_right = 269.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_tfp2h")
+layout_mode = 0
+offset_left = 165.0
+offset_top = 454.0
+offset_right = 948.0
+offset_bottom = 628.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="DialogueLabel" type="RichTextLabel" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -345.5
+offset_top = -64.0
+offset_right = 362.5
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_tfp2h")
+skip_pause_at_abbreviations = PackedStringArray("Mr", "Mrs", "Ms", "Dr", "etc", "eg", "ex")
+metadata/_custom_type_script = "uid://g32um0mltv5d"
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

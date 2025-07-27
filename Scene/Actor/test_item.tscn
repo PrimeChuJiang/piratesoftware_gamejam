@@ -1,0 +1,29 @@
+[gd_scene load_steps=8 format=3 uid="uid://c4olg7ne1pur4"]
+
+[ext_resource type="PackedScene" uid="uid://dxwfjbo2la56k" path="res://Scene/Actor/base_item_2d.tscn" id="1_mx4gx"]
+[ext_resource type="Texture2D" uid="uid://syoh74h2icwt" path="res://Assets/art/art-Item/art-Item-pistol(floor).png" id="2_0ahkn"]
+[ext_resource type="Script" uid="uid://c47kqka3rc2b6" path="res://Scripts/Actor/test_item.gd" id="2_ivyxb"]
+[ext_resource type="Texture2D" uid="uid://2fgao6kemwpu" path="res://Assets/art/art-Item/art-Item-pistol.png" id="3_0pepj"]
+[ext_resource type="Script" uid="uid://bjme56vuj0k40" path="res://Scripts/ResourceScript/Item.gd" id="3_ivyxb"]
+[ext_resource type="Resource" uid="uid://bqlvol73uv5u6" path="res://Dialogue/item_test.dialogue" id="4_j32nc"]
+
+[sub_resource type="Resource" id="Resource_hpeyn"]
+script = ExtResource("3_ivyxb")
+id = 0
+name = &"gun"
+description = ExtResource("4_j32nc")
+small_icon = ExtResource("3_0pepj")
+big_icon = ExtResource("3_0pepj")
+metadata/_custom_type_script = "uid://bjme56vuj0k40"
+
+[node name="TestItem" instance=ExtResource("1_mx4gx")]
+script = ExtResource("2_ivyxb")
+type = 1
+item_info = SubResource("Resource_hpeyn")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_0ahkn")
+
+[node name="CollisionPolygon2D" parent="RigidBody2D" index="0"]
+polygon = PackedVector2Array(0.287755, -25.1722, 0.489116, -36.0818, 0.657823, -28.9669, 0.652381, -22.8005, 0.521769, -21.3776, 0.320408, -19.4802)

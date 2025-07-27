@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://2jhog3ls4n0a"]
+
+[ext_resource type="Script" uid="uid://cqde2hsuknpwy" path="res://Scripts/UI/item_ui.gd" id="1_nt6x5"]
+
+[node name="ItemUI" type="Control"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_nt6x5")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 4
+stretch_mode = 5
+
+[connection signal="gui_input" from="TextureRect" to="." method="_on_texture_rect_gui_input"]

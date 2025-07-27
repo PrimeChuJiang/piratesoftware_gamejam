@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8qhxjshs5msj"]
+
+[ext_resource type="Texture2D" uid="uid://cjskokl5iocfi" path="res://Assets/art/art-ui/art-Item box.png" id="1_2puwq"]
+[ext_resource type="Script" uid="uid://dvc3crvgpveml" path="res://Scripts/UI/item_list_ui.gd" id="1_cbjui"]
+[ext_resource type="PackedScene" uid="uid://2jhog3ls4n0a" path="res://Scene/UI/item_ui.tscn" id="2_24b0s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2puwq"]
+atlas = ExtResource("1_2puwq")
+region = Rect2(31.2736, 33.0369, 180.316, 649.534)
+
+[node name="ItemListUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_cbjui")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 39.0
+offset_right = 202.0
+offset_bottom = 688.0
+scale = Vector2(0.7, 0.7)
+texture = SubResource("AtlasTexture_2puwq")
+stretch_mode = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TextureRect"]
+custom_minimum_size = Vector2(160, 629)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -314.5
+offset_right = 80.0
+offset_bottom = 314.5
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="list_conatiner" type="VBoxContainer" parent="TextureRect/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ItemUI" parent="TextureRect/ScrollContainer/list_conatiner" instance=ExtResource("2_24b0s")]
+layout_mode = 2

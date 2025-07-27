@@ -43,3 +43,11 @@ func _input(event:InputEvent):
 		in_room_ui._player = _player
 		in_room_ui._camera = _camera
 		Hud.add_child(in_room_ui)
+		var _room_node : Node2D = get_tree().current_scene.scene_root
+		if _room_node and _room_node.get_child_count()>0:
+			for _child_node in _room_node.get_children():
+				if _child_node is Room :
+					_room_node.remove_child(_child_node)
+					_child_node.remove_scene()
+		var room : Room = _owner.room.instantiate()
+		_room_node.add_child(room)
