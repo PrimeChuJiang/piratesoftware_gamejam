@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2svh4a0fmpnh"]
+
+[ext_resource type="PackedScene" uid="uid://bd8046whnvp14" path="res://Scene/Maps/base_room.tscn" id="1_3m8ia"]
+[ext_resource type="Texture2D" uid="uid://cpwx2hyc36q8" path="res://Assets/art/art-setting/art-setting-room1.png" id="2_aidpq"]
+[ext_resource type="PackedScene" uid="uid://j1dbc6m6rsnr" path="res://Scene/Actor/contract.tscn" id="3_aidpq"]
+
+[node name="BaseRoom" instance=ExtResource("1_3m8ia")]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParalloxLayer" index="0"]
+position = Vector2(576, 324)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_aidpq")
+
+[node name="BaseItem_2D" parent="ParalloxLayer/Sprite2D" index="0" instance=ExtResource("3_aidpq")]
+position = Vector2(-530, -26.6667)

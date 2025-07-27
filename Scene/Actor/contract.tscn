@@ -1,0 +1,28 @@
+[gd_scene load_steps=8 format=3 uid="uid://j1dbc6m6rsnr"]
+
+[ext_resource type="PackedScene" uid="uid://dxwfjbo2la56k" path="res://Scene/Actor/base_item_2d.tscn" id="1_t6t5e"]
+[ext_resource type="Texture2D" uid="uid://bd5ho6tmc1ngo" path="res://Assets/art/art-Item/art-Item-Contract(Check).png" id="2_k31ps"]
+[ext_resource type="Script" uid="uid://r3p8kqf0hti8" path="res://Scripts/Actor/contract.gd" id="2_tte4q"]
+[ext_resource type="Resource" uid="uid://bqlvol73uv5u6" path="res://Dialogue/item_test.dialogue" id="3_fsp5p"]
+[ext_resource type="Script" uid="uid://bjme56vuj0k40" path="res://Scripts/ResourceScript/Item.gd" id="4_lxx26"]
+[ext_resource type="Texture2D" uid="uid://djtbqukehbmbd" path="res://Assets/art/art-Item/art-Item-Contract(floor).png" id="5_u4llp"]
+
+[sub_resource type="Resource" id="Resource_k31ps"]
+script = ExtResource("4_lxx26")
+id = 0
+name = &"contract"
+description = ExtResource("3_fsp5p")
+small_icon = ExtResource("5_u4llp")
+big_icon = ExtResource("2_k31ps")
+metadata/_custom_type_script = "uid://bjme56vuj0k40"
+
+[node name="BaseItem_2D" instance=ExtResource("1_t6t5e")]
+script = ExtResource("2_tte4q")
+item_info = SubResource("Resource_k31ps")
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("5_u4llp")
+
+[node name="CollisionPolygon2D" parent="RigidBody2D" index="0"]
+polygon = PackedVector2Array(0.108163, -30.8642, 0.320408, -24.2235, 0.543537, -18.5316, 0.870068, -27.5439, 0.761224, -30.8642, 0.521769, -34.6588, 0.456463, -38.4535)
